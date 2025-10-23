@@ -1,0 +1,2 @@
+rootProject.name = 'vip_ml_trader'
+include ':app'
