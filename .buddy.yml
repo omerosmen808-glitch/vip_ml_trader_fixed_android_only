@@ -1,0 +1,19 @@
+pipelines:
+  - name: Build & Upload APK
+    trigger_mode: ON_EVERY_PUSH
+    ref_name: main
+    actions:
+      - name: Setup Flutter
+        action: flutter/install
+        inputs:
+          - version: '3.24.0'
+
+      - name: Build APK (Release)
+        run:
+          - flutter pub get
+          - flutter build apk --release
+
+      - name: Upload APK Artifact
+        action: artifacts/upload
+        inputs:
+          - source: "build/app/outputs/flutter-apk/app-release.apk"
