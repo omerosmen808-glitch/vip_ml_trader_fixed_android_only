@@ -1,17 +1,24 @@
+version: 2.0
+
 pipelines:
-  - name: Build & Upload APK
+  - name: Build & Upload Flutter APK
     trigger_mode: ON_EVERY_PUSH
     ref_name: main
-    actions:
-      - name: Setup Flutter
-        action: flutter/install
-        inputs:
-          - version: '3.24.0'
 
-      - name: Build APK (Release)
+    actions:
+      - name: Build Flutter APK
+        image: ubuntu:20.04
         run:
+          - apt-get update -y
+          - apt-get install -y git wget unzip xz-utils curl
+          - git clone https://github.com/flutter/flutter.git /opt/flutter
+          - export PATH="$PATH:/opt/flutter/bin"
+          - flutter channel stable
+          - flutter upgrade
+          - flutter config --enable-web
           - flutter pub get
           - flutter build apk --release
+          - ls -lah build/app/outputs/flutter-apk/
 
       - name: Upload APK Artifact
         action: artifacts/upload
