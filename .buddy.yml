@@ -2,7 +2,7 @@ version: 2.0
 
 pipelines:
   - name: Build & Upload Flutter APK
-    trigger_mode: ON_EVERY_PUSH
+    trigger_mode: ON_MANUAL
     ref_name: main
 
     actions:
@@ -16,6 +16,7 @@ pipelines:
           - flutter channel stable
           - flutter upgrade
           - flutter config --enable-web
+          - flutter create .          # ✅ هذا السطر يجعل Buddy يحدّث Android V2 تلقائيًا
           - flutter pub get
           - flutter build apk --release
           - ls -lah build/app/outputs/flutter-apk/
